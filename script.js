@@ -10,6 +10,9 @@ let computerPlay = () => {
 // Check for user input errors
 
 let checkForError = (choice) => {
+  if (choice === null) {
+    return "Game canceled";
+  }
   choice = choice.toLowerCase();
   while (choice !== "rock" && choice !== "paper" && choice !== "scissors") {
     choice = prompt(
@@ -39,7 +42,7 @@ let playRockPaperScissors = (playerSelection, computerSelection) => {
     } else {
       return "You win! Paper beats rock!";
     }
-  } else {
+  } else if (playerSelection === "scissors") {
     if (computerSelection === "scissors") {
       return "It's a tie! You both chose scissors!";
     } else if (computerSelection === "rock") {
@@ -47,6 +50,8 @@ let playRockPaperScissors = (playerSelection, computerSelection) => {
     } else {
       return "You win! Scissors beats paper!";
     }
+  } else {
+    return "Game canceled.";
   }
 };
 // const computerChoice = computerPlay();
@@ -67,6 +72,8 @@ let game = () => {
       playerScore++;
     } else if (round.includes("You lose!")) {
       computerScore++;
+    } else if (round.includes("canceled.")) {
+      break;
     }
     console.log(`Round ${i + 1}`);
     console.log(round);
