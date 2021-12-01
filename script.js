@@ -1,3 +1,5 @@
+let gameButtons = document.getElementsByClassName("game-buttons");
+
 // Function that randomly returns either Rock, Paper, or Scissors
 let computerPlay = () => {
   let randomNumber = Math.floor(Math.random() * 3);
@@ -89,4 +91,10 @@ let game = () => {
   }
 };
 
-game();
+Array.from(gameButtons).forEach((button) => {
+  button.addEventListener("click", () => {
+    console.log(playRockPaperScissors(button.id, computerPlay()));
+  });
+});
+
+// game();
