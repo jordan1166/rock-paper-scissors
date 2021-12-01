@@ -1,4 +1,11 @@
 let gameButtons = document.getElementsByClassName("game-buttons");
+let roundsPlayed = document.getElementById("rounds-played");
+let player = document.getElementById("player-score");
+let computer = document.getElementById("computer-score");
+let outcome = document.getElementById("outcome");
+let gameResult = document.getElementById("game-result");
+let playerWinsDisplay = document.getElementById("player-wins");
+let computerWinsDisplay = document.getElementById("computer-wins");
 
 // Function that randomly returns either Rock, Paper, or Scissors
 let computerPlay = () => {
@@ -61,40 +68,56 @@ let playRockPaperScissors = (playerSelection, computerSelection) => {
 // console.log(playRockPaperScissors("PaPer", computerChoice));
 
 // Play a 5 round game of rock paper scissors
+let playerWins = 0;
+let computerWins = 0;
+let playerScore = 0;
+let computerScore = 0;
+let rounds = 0;
 
-let game = () => {
-  let playerScore = 0;
-  let computerScore = 0;
-  for (let i = 0; i < 5; i++) {
-    const round = playRockPaperScissors(
-      prompt("Rock, Paper, or Scissors?: "),
-      computerPlay()
-    );
+let game = (choice) => {
+  gameResult.textContent = "";
+  playGame: if (playerScore < 5 && computerScore < 5) {
+    rounds++;
+    const round = playRockPaperScissors(choice, computerPlay());
     if (round.includes("You win!")) {
       playerScore++;
     } else if (round.includes("You lose!")) {
       computerScore++;
-    } else if (round.includes("canceled.")) {
-      break;
     }
-    console.log(`Round ${i + 1}`);
+    playerWinsDisplay.textContent = `Play Wins: ${playerWins}`;
+    computerWinsDisplay.textContent = `Computer Wins ${computerWins}`;
+    roundsPlayed.textContent = `Round ${rounds}`;
+    player.textContent = `Player Score: ${playerScore}`;
+    computer.textContent = `Computer Score: ${computerScore}`;
+    outcome.textContent = round;
+    console.log(`Round ${rounds}`);
     console.log(round);
     console.log(`Player Score: ${playerScore}`);
     console.log(`Computer Score: ${computerScore}`);
   }
-  if (playerScore > computerScore) {
-    console.log(`You won the game!`);
-  } else if (computerScore > playerScore) {
-    console.log(`The computer won the game :-(`);
-  } else {
-    console.log(`The game was a tie! You both got ${playerScore} points!`);
+
+  if (playerScore == 5 || computerScore == 5) {
+    if (playerScore > computerScore) {
+      gameResult.textContent = `You won the game!`;
+      playerWins++;
+      playerWinsDisplay.textContent = `Play Wins: ${playerWins}`;
+    } else if (computerScore > playerScore) {
+      gameResult.textContent = `The computer won the game :-(`;
+      computerWins++;
+      computerWinsDisplay.textContent = `Computer Wins ${computerWins}`;
+    } else {
+      gameResult.textContent = `The game was a tie! You both got ${playerScore} points!`;
+    }
+    playerScore = 0;
+    computerScore = 0;
+    rounds = 0;
+
+    return;
   }
 };
 
 Array.from(gameButtons).forEach((button) => {
   button.addEventListener("click", () => {
-    console.log(playRockPaperScissors(button.id, computerPlay()));
+    game(button.id);
   });
 });
-
-// game();
